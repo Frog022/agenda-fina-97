@@ -51,6 +51,9 @@ export const Header = () => {
             <a href="#sobre" className="text-foreground hover:text-primary transition-smooth font-medium">
               Sobre
             </a>
+            <a href="#cadastro" className="text-foreground hover:text-primary transition-smooth font-medium">
+              Cadastro
+            </a>
             <a href="#contato" className="text-foreground hover:text-primary transition-smooth font-medium">
               Contato
             </a>
@@ -108,6 +111,13 @@ export const Header = () => {
                 onClick={toggleMobileMenu}
               >
                 Sobre
+              </a>
+              <a 
+                href="#cadastro" 
+                className="text-foreground hover:text-primary transition-smooth font-medium py-2"
+                onClick={toggleMobileMenu}
+              >
+                Cadastro
               </a>
               <a 
                 href="#contato" 

@@ -14,8 +14,44 @@
 
 import { Button } from '@/components/ui/button';
 import { MapPin, Phone, Mail, Clock, Instagram, Facebook } from 'lucide-react';
+import { useContact } from '@/hooks/useContact';
+import { useState } from 'react';
 
 export const ContactSection = () => {
+  const { submitContact, isSubmitting } = useContact();
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    subject: 'Agendamento',
+    message: ''
+  });
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    const result = await submitContact(formData);
+    
+    if (result.success) {
+      // Limpar formulário após sucesso
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        subject: 'Agendamento',
+        message: ''
+      });
+    }
+  };
+
   return (
     <section id="contato" className="py-20">
       <div className="container mx-auto px-4 lg:px-8">
@@ -139,7 +175,7 @@ export const ContactSection = () => {
             </h3>
 
             <div className="bg-gradient-card rounded-2xl p-8 border border-border/50">
-              <form className="space-y-6">
+              <form onSubmit={handleSubmit} className="space-y-6">
                 {/* Nome */}
                 <div>
                   <label className="block text-sm font-semibold text-card-foreground mb-2">
@@ -147,6 +183,10 @@ export const ContactSection = () => {
                   </label>
                   <input
                     type="text"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleInputChange}
+                    required
                     className="w-full px-4 py-3 bg-input border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-smooth text-foreground"
                     placeholder="Seu nome completo"
                   />
@@ -159,6 +199,10 @@ export const ContactSection = () => {
                   </label>
                   <input
                     type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    required
                     className="w-full px-4 py-3 bg-input border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-smooth text-foreground"
                     placeholder="seu@email.com"
                   />
@@ -171,6 +215,9 @@ export const ContactSection = () => {
                   </label>
                   <input
                     type="tel"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleInputChange}
                     className="w-full px-4 py-3 bg-input border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-smooth text-foreground"
                     placeholder="(11) 99999-9999"
                   />
@@ -181,7 +228,12 @@ export const ContactSection = () => {
                   <label className="block text-sm font-semibold text-card-foreground mb-2">
                     Assunto
                   </label>
-                  <select className="w-full px-4 py-3 bg-input border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-smooth text-foreground">
+                  <select 
+                    name="subject"
+                    value={formData.subject}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-3 bg-input border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-smooth text-foreground"
+                  >
                     <option>Agendamento</option>
                     <option>Informações sobre Serviços</option>
                     <option>Sugestões</option>
@@ -197,15 +249,25 @@ export const ContactSection = () => {
                   </label>
                   <textarea
                     rows={4}
+                    name="message"
+                    value={formData.message}
+                    onChange={handleInputChange}
+                    required
                     className="w-full px-4 py-3 bg-input border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-smooth text-foreground resize-none"
                     placeholder="Descreva sua mensagem aqui..."
                   ></textarea>
                 </div>
 
                 {/* Botão */}
-                <Button variant="hero" size="lg" className="w-full">
+                <Button 
+                  type="submit" 
+                  variant="hero" 
+                  size="lg" 
+                  className="w-full" 
+                  disabled={isSubmitting}
+                >
                   <Mail className="h-5 w-5 mr-2" />
-                  Enviar Mensagem
+                  {isSubmitting ? 'Enviando...' : 'Enviar Mensagem'}
                 </Button>
               </form>
             </div>

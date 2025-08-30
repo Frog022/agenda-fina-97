@@ -18,6 +18,7 @@ import { ServicesSection } from '@/components/sections/ServicesSection';
 import { BarbersSection } from '@/components/sections/BarbersSection';
 import { AboutSection } from '@/components/sections/AboutSection';
 import { ContactSection } from '@/components/sections/ContactSection';
+import { CustomerRegistrationSection } from '@/components/sections/CustomerRegistrationSection';
 
 const Index = () => {
   return (
@@ -38,6 +39,9 @@ const Index = () => {
         
         {/* História e valores */}
         <AboutSection />
+        
+        {/* Cadastro de clientes */}
+        <CustomerRegistrationSection />
         
         {/* Contato e localização */}
         <ContactSection />
